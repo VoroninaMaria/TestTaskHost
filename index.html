@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Job Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<form id="serviceJobForm">
+    <div class="row" >
+        <div class="column">
+            <fieldset>
+                <p>Client details</p>
+                <div class="row">
+                    <div class="column">
+                        <input type="text" id="first_name" name="first_name" placeholder="First name" required>
+                    </div>
+                    <div class="column">
+                        <input type="text" id="last_name" name="last_name" placeholder="Last name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="tel" id="phone" name="phone" placeholder="Phone" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="email" id="email" name="email" placeholder="Email (optional)">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="column">
+            <fieldset>
+                <p>Job details</p>
+                <div class="row">
+                    <div class="column">
+                        <select id="job_type" name="job_type" required>
+                            <option value="">Job Type</option>
+                            <option value="type1">type1</option>
+                            <option value="type2">type2</option>
+                            <option value="type3">type3</option>
+                        </select>
+                    </div>
+                    <div class="column">
+                        <select id="job_source" name="job_source" required>
+                            <option value="">Job Source</option>
+                            <option value="source1">source1</option>
+                            <option value="source2">source2</option>
+                            <option value="source3">source3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <textarea id="job_description" name="job_description" rows="4" placeholder="Job description (optional)"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row" class="fieldset_block">
+        <div class="column" >
+            <fieldset>
+                <p>Service location</p>
+                <div class="row">
+                    <div class="column">
+                        <input type="text" id="address" name="address" placeholder="Address" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="text" id="city" name="city" placeholder="City" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="text" id="state" name="state" placeholder="State" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="text" id="zip" name="zip" placeholder="Zip code" required>
+                    </div>
+                    <div class="column">
+                        <select id="area" name="area" required>
+                            <option value="">Area</option>
+                            <option value="area1">area1</option>
+                            <option value="area2">area2</option>
+                            <option value="area3">area3</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="column">
+            <fieldset>
+                <p>Scheduled</p>
+                <div class="row">
+                    <div class="column">
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <input type="time" id="start_time" name="start_time" required>
+                    </div>
+                    <div class="column">
+                        <input type="time" id="end_time" name="end_time" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <select id="test" name="test" required>
+                            <option value="">Test select</option>
+                            <option value="test1">test1</option>
+                            <option value="test2">test2</option>
+                            <option value="test3">test3</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <button type="button" onclick="validateForm()">Submit</button>
+</form>
+
+<script>
+  function validateForm() {
+    let isValid = true;
+
+    const requiredFields = document.querySelectorAll('#serviceJobForm [required]');
+    console.log(requiredFields);
+
+    requiredFields.forEach(field => {
+      field.style.borderColor = '';
+      const errorMsg = field.parentNode.querySelector('.error-message');
+      if (errorMsg) {
+        errorMsg.remove();
+      }
+    });
+
+    requiredFields.forEach(field => {
+      if (!field.value.trim()) {
+        isValid = false;
+        field.style.borderColor = 'red';
+
+        if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-message')) {
+          const errorMessage = document.createElement('span');
+          errorMessage.textContent = `Required`;
+          errorMessage.classList.add('error-message');
+          errorMessage.style.color = 'red';
+          errorMessage.style.fontSize = '12px';
+          field.parentNode.appendChild(errorMessage);
+        }
+      }
+    });
+
+    if (!isValid) {
+      return false;
+    }
+    saveToPipedrive();
+  }
+</script>
+
+<script>
+  document.querySelectorAll('select').forEach(function(selectElement) {
+    selectElement.addEventListener('change', function() {
+      if (this.value) {
+        this.classList.add('valid');
+      } else {
+        this.classList.remove('valid');
+      }
+    });
+  });
+</script>
+
+<script>
+  async function saveToPipedrive() {
+    const clientDetails = {
+      firstName: document.getElementById('first_name').value,
+      lastName: document.getElementById('last_name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+    };
+
+    const jobDetails = {
+      jobType: document.getElementById('job_type').value,
+      jobSource: document.getElementById('job_source').value,
+      jobDescription: document.getElementById('job_description').value,
+    };
+
+    const serviceLocation = {
+      address: document.getElementById('address').value,
+      city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
+      zip: document.getElementById('zip').value,
+      area: document.getElementById('area').value,
+    };
+
+    const scheduledDetails = {
+      startDate: document.getElementById('start_date').value,
+      startTime: document.getElementById('start_time').value,
+      endTime: document.getElementById('end_time').value,
+      test: document.getElementById('test').value,
+    };
+
+    try {
+      const contactResponse = await fetch('https://api.pipedrive.com/v1/persons?api_token=3d341234841e6a025847bd3407148555e56a0cea', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: `${clientDetails.firstName} ${clientDetails.lastName}`,
+          phone: [{ value: clientDetails.phone }],
+          email: [{ value: clientDetails.email }]
+        })
+      });
+
+      const contactResult = await contactResponse.json();
+      if (!contactResult.success) {
+        throw new Error('Error creating contact: ' + contactResult.error);
+      }
+
+      const contactId = contactResult.data.id;
+
+      const dealResponse = await fetch('https://api.pipedrive.com/v1/deals?api_token=3d341234841e6a025847bd3407148555e56a0cea', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: `${clientDetails.firstName} ${clientDetails.lastName} - ${jobDetails.jobType}`,
+          person_id: contactId,
+          "08ddc0309d29edb3a1da2a89df298534073f3c8a": jobDetails.jobType,
+          "d7e4bafe25bbc2e61999bc4045e6d3b5065e291a": jobDetails.jobSource,
+          "49fbe43a1930e338e465b4382fdea3546f333c72": jobDetails.jobDescription,
+          "e47c303bb5da322175d03c748bd7c18ea33cd742": serviceLocation.address,
+          "d611f08aa1a6c688481eee56dc638109c00f64d2": serviceLocation.city,
+          "b21c4b4ae7c0bd7da74e3eb49263b7e8ec385e91": serviceLocation.state,
+          "20b93f36e1c5c57612bc3377a036fed056d808e4": serviceLocation.zip,
+          "3c716acec41b2a2d4a67a43696d4842b3e118b3a": serviceLocation.area,
+          "43dc2ed4ab212cc02462b985b6095e5a3b5e5d5b": scheduledDetails.startDate,
+          "20396e480a75487f22d04fff96d1cba81eaeb0f5": scheduledDetails.startTime,
+          "c9fd56097c26789b4fce36c65b33a3eb4dc394fa": scheduledDetails.endTime,
+          "fd66da484fe81bddf57ba34b5bdbc653e0d1c6f9": scheduledDetails.test
+        })
+      });
+
+      const dealResult = await dealResponse.json();
+      if (dealResult.success) {
+        const dealId = dealResult.data.id;
+        const dealUrl = `https://143.pipedrive.com/deal/${dealId}`;
+        const modalDiv = document.createElement('div');
+        modalDiv.innerHTML = `
+        <div id="modalContent" style="background: #fff; padding: 20px; border: 1px solid #ccc; position: relative; width: 600px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <p>Deal successfully created in Pipedrive!
+            <a href="${dealUrl}" target="_blank">View it here</a>.</p>
+            <button id="closeModal" style="position: absolute; top: 5px; right: 10px;">X</button>
+        </div>
+    `;
+        modalDiv.style.position = 'fixed';
+        modalDiv.style.top = '20px';
+        modalDiv.style.left = '0';
+        modalDiv.style.right = '0';
+        modalDiv.style.zIndex = '1000';
+        modalDiv.style.display = 'flex';
+        modalDiv.style.justifyContent = 'center';
+        modalDiv.style.alignItems = 'flex-start';
+
+        document.body.appendChild(modalDiv);
+        document.getElementById('closeModal').onclick = function() {
+          modalDiv.remove();
+        };
+        setTimeout(() => {
+          if (modalDiv) {
+            modalDiv.remove();
+          }
+        }, 10000);
+      } else {
+        console.error('Error from Pipedrive API:', dealResult);
+        alert('Error: ' + dealResult.error);
+      }
+    } catch (error) {
+      console.error('Error saving to Pipedrive:', error);
+      alert('An error occurred while saving the data.');
+    }
+  }
+</script>
+
+</body>
+</html>

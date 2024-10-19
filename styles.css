@@ -1,0 +1,91 @@
+form {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.column {
+    flex: 1;
+    min-width: 150px;
+    padding: 0 10px;
+}
+
+fieldset {
+    height: 95%;
+    padding-bottom: 10px;
+    border: 1px solid white;
+    flex: 1;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px lightgrey;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    border: 2px solid gainsboro;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+    color: black;
+    font-family: Arial;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+p {
+    color: dimgray;
+    font-family: Arial;
+    font-size: 22px;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin: 5px;
+}
+
+.row {
+    justify-content: flex-start;
+}
+
+select, input[type="date"], input[type="time"] {
+    color: gray;
+}
+
+input[type="date"]:valid, input[type="time"]:valid {
+    color: black;
+}
+
+select.valid {
+    color: black;
+}
+
+button {
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
+}
